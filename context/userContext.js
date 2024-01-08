@@ -5,22 +5,44 @@ export const UserContext = createContext({
   lastName: "",
   phoneNum: "",
   email: "",
-  addFirstName: (newFirstName) => {},
-  addLastName: (newLastName) => {},
-  addPhoneNum: (newPhoneNum) => {},
-  addEmail: (newEmail) => {},
+  firstNameValid: false,
+  lastNameValid: false,
+  phoneNumValid: false,
+  emailValid: false,
+  setFirstName: (newFirstName) => {},
+  setLastName: (newLastName) => {},
+  setPhoneNum: (newPhoneNum) => {},
+  setEmail: (newEmail) => {},
 });
 
 function reducer(state, action) {
+  let payload = action.payload;
+  let valid = false;
   switch (action.type) {
     case "FIRST_NAME":
-      return { ...state, firstName: action.payload };
+      if (payload.trim().length > 0) {
+        payload = payload.trim();
+        valid = true;
+      }
+      return { ...state, firstName: payload, firstNameValid: valid };
     case "LAST_NAME":
-      return { ...state, lastName: action.payload };
+      if (payload.trim().length > 0) {
+        payload = payload.trim();
+        valid = true;
+      }
+      return { ...state, lastName: payload, lastNameValid: valid };
     case "PHONE_NUM":
-      return { ...state, phoneNum: action.payload };
+      if (payload.trim().length === 12) {
+        valid = true;
+        payload = payload.trim();
+      }
+      return { ...state, phoneNum: payload, phoneNumValid: valid };
     case "EMAIL_ADDR":
-      return { ...state, email: action.payload };
+      if (payload.trim().length > 1 && payload.includes("@")) {
+        valid = true;
+        payload = payload.trim();
+      }
+      return { ...state, email: payload, emailValid: valid };
     default:
       return state;
   }
@@ -33,21 +55,25 @@ function UserContextProvider({ children }) {
     lastName: "",
     phoneNum: "",
     email: "",
+    firstNameValid: false,
+    lastNameValid: false,
+    phoneNumValid: false,
+    emailValid: false,
   });
 
-  function addFirstName(newFirstName) {
+  function setFirstName(newFirstName) {
     dispatch({ type: "FIRST_NAME", payload: newFirstName });
   }
 
-  function addLastName(newLastName) {
+  function setLastName(newLastName) {
     dispatch({ type: "LAST_NAME", payload: newLastName });
   }
 
-  function addPhoneNum(newPhoneNum) {
+  function setPhoneNum(newPhoneNum) {
     dispatch({ type: "PHONE_NUM", payload: newPhoneNum });
   }
 
-  function addEmail(newEmail) {
+  function setEmail(newEmail) {
     dispatch({ type: "EMAIL_ADDR", payload: newEmail });
   }
 
@@ -56,10 +82,14 @@ function UserContextProvider({ children }) {
     lastName: state.lastName,
     phoneNum: state.phoneNum,
     email: state.email,
-    addFirstName: addFirstName,
-    addLastName: addLastName,
-    addPhoneNum: addPhoneNum,
-    addEmail: addEmail,
+    firstNameValid: state.firstNameValid,
+    lastNameValid: state.lastNameValid,
+    phoneNumValid: state.phoneNumValid,
+    emailValid: state.emailValid,
+    setFirstName: setFirstName,
+    setLastName: setLastName,
+    setPhoneNum: setPhoneNum,
+    setEmail: setEmail,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

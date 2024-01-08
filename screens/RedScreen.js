@@ -1,33 +1,36 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Text, View, StyleSheet, TextInput, Button } from "react-native";
+
+import ErrorText from "../components/ErrorText";
 
 import { UserContext } from "../context/userContext";
 
 function RedScreen({ navigation }) {
   const userEmailCtx = useContext(UserContext);
-  const [email, setEmail] = useState();
 
-  function onChangeEmail(newEmail) {
-    setEmail(newEmail);
+  function onChangeEmail(email) {
+    userEmailCtx.setEmail(email);
   }
 
   function onPressNext() {
-    userEmailCtx.addEmail(email);
-    navigation.navigate("Validation");
+    if (userEmailCtx.emailValid) {
+      navigation.navigate("Validation");
+    }
   }
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.text, { marginBottom: 48 }]}>Using Reducer</Text>
       <Text style={styles.text}>Enter your email address</Text>
       <TextInput
-        value={email}
+        value={userEmailCtx.email}
         placeholder="email address"
+        keyboardType="email-address"
         onChangeText={onChangeEmail}
         cursorColor="#333"
         style={styles.input}
       />
       <Button title="Next" color="#a00" onPress={onPressNext} />
+      {!userEmailCtx.emailValid && <ErrorText />}
     </View>
   );
 }
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#faa",
     flexDirection: "column",
     // justifyContent: "center",
-    paddingTop: 150,
+    paddingTop: 64,
     alignItems: "center",
     padding: 12,
   },

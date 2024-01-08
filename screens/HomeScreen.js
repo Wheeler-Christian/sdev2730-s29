@@ -7,27 +7,9 @@ function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Registration with useReducer</Text>
+      <Text style={styles.text}>Account Registration</Text>
       <View style={styles.buttonContainer}>
-        <Button
-          title="Name"
-          color="blue"
-          onPress={() => pressHandler("Name")}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Phone"
-          color="green"
-          onPress={() => pressHandler("Phone")}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Email"
-          color="red"
-          onPress={() => pressHandler("Email")}
-        />
+        <Button title="Begin" onPress={() => pressHandler("Name")} />
       </View>
     </View>
   );

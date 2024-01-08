@@ -4,5 +4,5 @@ Davis Technical College
 
 Software Development 2730
 
-Project: S27 - Registration Input and Validation with useReducer and useContext
+Project: S29 - Registration Form Input and Validation
 
